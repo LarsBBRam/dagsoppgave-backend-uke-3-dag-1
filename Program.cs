@@ -77,7 +77,8 @@ class Program
             Console.WriteLine("2. Check how much we have of each meat.");
             Console.WriteLine("3. Check the prices of each meat.");
             Console.WriteLine("4. Add new meat.");
-            Console.WriteLine("5. Go back.");
+            Console.WriteLine("5. Check the total price of all added meat.");
+            Console.WriteLine("6. Go back.");
             Console.WriteLine();
             Console.WriteLine("NB: Only enter one of these numbers.");
 
@@ -115,18 +116,37 @@ class Program
                     case "3":
 
                         Console.WriteLine("Here's how much one kg of each meat costs:");
-                        var meatListPrice = Meat.meatList.Zip(Meat.meatList, (first, second) => first + " costs " + second + "kr per kg.");
+                        var meatListPrice = Meat.meatList.Zip(Meat.meatPrices, (first, second) => first + " costs " + second + "kr per kg.");
+                        foreach (var meat in meatListPrice)
+                        {
+                            Console.WriteLine(meat);
+                        }
                         Console.WriteLine("Press enter to return to the previous menu.");
                         Console.ReadLine();
                         break;
                     case "4":
+                        NewMeat();
+                        break;
+
+                    case "5":
+                        TotalMeat();
                         break;
 
                 }
             }
-        } while (meatMenuInput != "5");
+        } while (meatMenuInput != "6");
     }
 
+    public static void TotalMeat()
+    {
+        var totalMeat = Meat.meatCount.Zip(Meat.meatPrices, (first, second) => first * second);
+
+        decimal total = totalMeat.Sum();
+        Console.WriteLine($"The total amount of money our meat is currently worth is: {total}kr. ");
+        Console.WriteLine("Press enter to return");
+        Console.ReadLine();
+
+    }
     public static void NewMeat()
     {
         Console.WriteLine("What kind of meat would you like to add?");
